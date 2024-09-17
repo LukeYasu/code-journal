@@ -1,5 +1,5 @@
 'use strict';
-/* exported data, writeForm, readForm */
+/* exported writeData, readData */
 const data = {
   view: 'entry-form',
   entries: [],
