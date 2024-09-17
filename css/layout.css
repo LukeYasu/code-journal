@@ -2,6 +2,10 @@
   display: none !important;
 }
 
+body {
+  background-color: #eee;
+}
+
 .container {
   max-width: 575px;
   margin: 0 auto;
@@ -18,7 +22,89 @@
   width: 100%;
 }
 
-@media screen and (min-width: 768px) {
+label {
+  line-height: 3rem;
+}
+
+input {
+  margin-bottom: 1rem;
+  height: 2.5rem;
+  border-radius: 0.3rem;
+  border-width: 0.1rem;
+  border-style: solid;
+  border-color: #aeaeaf;
+  width: 100%;
+}
+
+textarea {
+  height: 8rem;
+  border-radius: 0.3rem;
+  border-width: 0.1rem;
+  border-style: solid;
+  border-color: #aeaeaf;
+  width: 100%;
+}
+
+/* .user-notes {
+  display: flex;
+} */
+
+button {
+  color: white;
+  background-color: #4c2676;
+  width: 3.5rem;
+  margin-right: 0.75rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.3rem;
+  border-width: 0.1rem;
+  border-color: #686b6b;
+  padding: 0.5rem;
+}
+
+.save-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.header {
+  width: 100%;
+  margin: 0;
+  padding: 2rem 0;
+  color: white;
+  z-index: 0;
+}
+
+.header-background {
+  width: 100vw;
+  padding: 3.15rem 0;
+  background-color: #4c2676;
+  position: absolute;
+  z-index: -1;
+}
+
+.entry-header {
+  padding-left: 0.75rem;
+}
+
+.column-half img {
+  max-width: 100%;
+  background-color: red;
+}
+
+.user-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-notes {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (width >= 768px) {
   .container {
     max-width: 900px;
   }
