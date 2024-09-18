@@ -4,8 +4,6 @@
 
 .container {
   max-width: 575px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
 }
 
 .row {
@@ -18,7 +16,30 @@
   width: 100%;
 }
 
-@media screen and (min-width: 768px) {
+.save-button {
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.header-background {
+  width: 100%;
+}
+
+img {
+  max-width: 100%;
+}
+
+.user-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-notes {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (width >= 768px) {
   .container {
     max-width: 900px;
   }

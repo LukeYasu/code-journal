@@ -1,23 +1,15 @@
-/* exported data, writeData, readData */
-interface DataInterface {
-  view: string;
-  entries: CodeJournalForm[];
-  editing: null;
-  nextEntryId: number;
-}
-const data: DataInterface = {
+'use strict';
+const data = {
   view: 'entry-form',
   entries: [],
   editing: null,
   nextEntryId: 1,
 };
-
-function writeData(): void {
+function writeData() {
   const dataJSON = JSON.stringify(data.entries);
   localStorage.setItem('data-storage', dataJSON);
 }
-
-function readData(): string[] {
+function readData() {
   const dataStorage = localStorage.getItem('data-storage');
   if (typeof dataStorage === typeof '' && dataStorage !== null) {
     return JSON.parse(dataStorage);

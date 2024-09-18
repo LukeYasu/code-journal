@@ -1,42 +1,32 @@
+'use strict';
 /* global data, writeData */
-const $entryTitle = document.querySelector('#entry-title') as HTMLFormElement;
-const $photoURL = document.querySelector('#photo-url') as HTMLFormElement;
-const $entryNotes = document.querySelector('#entry-notes') as HTMLFormElement;
+const $entryTitle = document.querySelector('#entry-title');
+const $photoURL = document.querySelector('#photo-url');
+const $entryNotes = document.querySelector('#entry-notes');
 const $img = document.querySelector('img');
-const $form = document.querySelector('form') as HTMLFormElement;
+const $form = document.querySelector('form');
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
 if (!$img) throw new Error('$img query failed');
 if (!$form) throw new Error('$form query failed');
-
-interface CodeJournalForm {
-  entryId: number;
-  title: string;
-  photoURL: string;
-  notes: string;
-}
-
 $form.addEventListener('submit', handleSubmit);
 $photoURL.addEventListener('input', handleInput);
-
-function handleInput(): void {
+function handleInput() {
   const photoSRC = $photoURL.value;
   $img?.setAttribute('src', photoSRC);
 }
-
-function handleSubmit(event: SubmitEvent): void {
+function handleSubmit(event) {
   event.preventDefault();
-  const newFormEntry: CodeJournalForm = {
+  const newFormEntry = {
     entryId: data.nextEntryId,
+    nextEntryId: data.nextEntryId + 1,
     title: $entryTitle.value,
     photoURL: $photoURL.value,
     notes: $entryNotes.value,
   };
-
   data.nextEntryId += 1;
   data.entries.unshift(newFormEntry);
-
   $img?.setAttribute('src', 'images/placeholder-image-square.jpg');
   $form?.reset();
   writeData();
