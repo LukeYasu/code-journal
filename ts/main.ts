@@ -10,6 +10,14 @@ if (!$entryNotes) throw new Error('$entryNotes query failed');
 if (!$img) throw new Error('$img query failed');
 if (!$form) throw new Error('$form query failed');
 
+interface CodeJournalForm {
+  entryId: number;
+  nextEntryId: number;
+  title: string;
+  photoURL: string;
+  notes: string;
+}
+
 $form.addEventListener('submit', handleSubmit);
 $photoURL.addEventListener('input', handleInput);
 
@@ -18,26 +26,17 @@ function handleInput(): void {
   $img?.setAttribute('src', photoSRC);
 }
 
-interface codeJournalForm {
-  entryId: number;
-  nextEntryId: number;
-  title: string;
-  photoURL: string;
-  notes: string;
-}
-
-let nextEntryIdNum = data.nextEntryId;
-
 function handleSubmit(event: SubmitEvent): void {
   event.preventDefault();
-  const newFormEntry: codeJournalForm = {
-    entryId: nextEntryIdNum,
-    nextEntryId: nextEntryIdNum + 1,
+  const newFormEntry: CodeJournalForm = {
+    entryId: data.nextEntryId,
+    nextEntryId: data.nextEntryId + 1,
     title: $entryTitle.value,
     photoURL: $photoURL.value,
     notes: $entryNotes.value,
   };
-  nextEntryIdNum = newFormEntry.entryId + 1;
+
+  data.nextEntryId += 1;
   data.entries.unshift(newFormEntry);
 
   $img?.setAttribute('src', 'images/placeholder-image-square.jpg');

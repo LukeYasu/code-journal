@@ -16,18 +16,16 @@ function handleInput() {
   const photoSRC = $photoURL.value;
   $img?.setAttribute('src', photoSRC);
 }
-let nextEntryIdNum = data.nextEntryId;
 function handleSubmit(event) {
   event.preventDefault();
-  const eventTarget = event.target;
   const newFormEntry = {
-    entryId: nextEntryIdNum,
-    nextEntryId: nextEntryIdNum + 1,
+    entryId: data.nextEntryId,
+    nextEntryId: data.nextEntryId + 1,
     title: $entryTitle.value,
     photoURL: $photoURL.value,
     notes: $entryNotes.value,
   };
-  nextEntryIdNum = newFormEntry.entryId + 1;
+  data.nextEntryId += 1;
   data.entries.unshift(newFormEntry);
   $img?.setAttribute('src', 'images/placeholder-image-square.jpg');
   $form?.reset();

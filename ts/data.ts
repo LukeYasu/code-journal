@@ -1,11 +1,11 @@
 /* exported data, writeData, readData */
-interface dataInterface {
+interface DataInterface {
   view: string;
-  entries: codeJournalForm[];
+  entries: CodeJournalForm[];
   editing: null;
   nextEntryId: number;
 }
-const data: dataInterface = {
+const data: DataInterface = {
   view: 'entry-form',
   entries: [],
   editing: null,

@@ -1,0 +1,55 @@
+body {
+  background-color: #eee;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.column-full,
+.column-half {
+  padding: 0 0.75rem;
+}
+
+input {
+  margin: 1rem 0 2rem;
+  height: 2.5rem;
+  border-radius: 0.3rem;
+  border: 0.1rem solid #aeaeaf;
+}
+
+textarea {
+  height: 8rem;
+  margin-top: 1rem;
+  border-radius: 0.3rem;
+  border: 0.1rem solid #aeaeaf;
+}
+
+img {
+  margin-bottom: 1rem;
+  max-width: 100%;
+}
+
+.button {
+  color: white;
+  background-color: #4c2676;
+  margin: 0.75rem;
+  border-radius: 0.3rem;
+  border: 0.1rem default #686b6b;
+  padding: 0.5rem;
+}
+
+.header {
+  margin: 0;
+  padding: 2rem 0;
+  color: white;
+}
+
+.header-background {
+  background-color: #4c2676;
+}
+
+.entry-header {
+  padding-left: 0.75rem;
+}
