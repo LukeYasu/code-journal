@@ -12,7 +12,6 @@ if (!$form) throw new Error('$form query failed');
 
 interface CodeJournalForm {
   entryId: number;
-  nextEntryId: number;
   title: string;
   photoURL: string;
   notes: string;
@@ -30,7 +29,6 @@ function handleSubmit(event: SubmitEvent): void {
   event.preventDefault();
   const newFormEntry: CodeJournalForm = {
     entryId: data.nextEntryId,
-    nextEntryId: data.nextEntryId + 1,
     title: $entryTitle.value,
     photoURL: $photoURL.value,
     notes: $entryNotes.value,

@@ -28,11 +28,10 @@ textarea {
 
 img {
   margin-bottom: 1rem;
-  max-width: 100%;
 }
 
 .button {
-  color: white;
+  color: #fff;
   background-color: #4c2676;
   margin: 0.75rem;
   border-radius: 0.3rem;
@@ -43,7 +42,7 @@ img {
 .header {
   margin: 0;
   padding: 2rem 0;
-  color: white;
+  color: #fff;
 }
 
 .header-background {
