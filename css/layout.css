@@ -46,10 +46,10 @@ img {
   justify-content: flex-end;
 }
 
-button {
+.button {
   color: white;
   background-color: #4c2676;
-  margin: 0.75rem 0;
+  margin: 0.75rem;
   border-radius: 0.3rem;
   border: 0.1rem default #686b6b;
   padding: 0.5rem;
@@ -65,10 +65,7 @@ button {
 
 .header-background {
   width: 100vw;
-  padding: 3.15rem 0;
   background-color: #4c2676;
-  position: absolute;
-  z-index: -1;
 }
 
 .entry-header {
@@ -97,9 +94,5 @@ button {
 
   .column-half {
     width: 50%;
-  }
-
-  button {
-    margin: 0.75rem;
   }
 }

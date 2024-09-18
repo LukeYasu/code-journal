@@ -1,19 +1,18 @@
 'use strict';
-/* exported writeData, readData */
-const data = {
+let data = {
   view: 'entry-form',
   entries: [],
   editing: null,
   nextEntryId: 1,
 };
 function writeData() {
-  let formEntryArrayJSON = JSON.stringify(formEntryArray);
-  localStorage.setItem('formEntryArrayJSON-storage', formEntryArrayJSON);
+  const dataJSON = JSON.stringify(data.entries);
+  localStorage.setItem('data-storage', dataJSON);
 }
 function readData() {
-  const formEntryArrayStorage = localStorage.getItem('formEntryArray-storage');
-  if (formEntryArrayStorage !== null) {
-    return JSON.parse(formEntryArrayStorage);
+  const dataStorage = localStorage.getItem('data-storage');
+  if (typeof dataStorage === typeof '' && dataStorage !== null) {
+    return JSON.parse(dataStorage);
   } else {
     return [];
   }

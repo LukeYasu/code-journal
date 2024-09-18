@@ -17,45 +17,47 @@
   </head>
   <body>
     <header>
-      <div class="header-background"></div>
-      <div class="container">
-        <div class="row">
-          <div class="column-full">
-            <h1 class="header">Code Journal</h1>
+      <div class="header-background">
+        <div class="container">
+          <div class="row">
+            <div class="column-full">
+              <h1 class="header">Code Journal</h1>
+            </div>
           </div>
         </div>
       </div>
     </header>
     <main class="container">
-      <div class="row">
-        <h2 class="entry-header">New Entry</h2>
-      </div>
-      <div class="row">
-        <div class="column-half">
-          <img
-            src="images/placeholder-image-square.jpg"
-            alt="placeholder image" />
+      <form>
+        <div data-view="entry-form">
+          <div class="row">
+            <h2 class="entry-header">New Entry</h2>
+          </div>
+          <div class="row">
+            <div class="column-half">
+              <img
+                src="images/placeholder-image-square.jpg"
+                alt="placeholder image" />
+            </div>
+            <div class="column-half user-inputs">
+              <label for="entry-title">Title</label>
+              <input id="entry-title" type="text" required />
+              <label for="photo-url">Photo URL</label>
+              <input id="photo-url" type="text" required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="column-full user-notes">
+              <label for="entry-notes">Notes</label>
+              <textarea id="entry-notes"></textarea>
+            </div>
+            <div class="row save-button">
+              <input class="button" type="submit" value="SAVE" />
+            </div>
+          </div>
+          <div data-view="entries" class="hidden"></div>
         </div>
-        <div class="column-half">
-          <form class="user-inputs" data-view="entry-form">
-            <label for="entry-title">Title</label>
-            <input id="entry-title" type="text" required />
-            <label for="photo-url">Photo URL</label>
-            <input id="photo-url" type="text" required />
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <form class="column-full user-notes">
-          <label for="entry-notes">Notes</label>
-          <textarea id="entry-notes"></textarea>
-        </form>
-        <div class="row save-button">
-          <button>SAVE</button>
-        </div>
-      </div>
-
-      <div data-view="entries" class="hidden"></div>
+      </form>
     </main>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>

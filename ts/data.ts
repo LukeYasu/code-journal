@@ -1,5 +1,11 @@
-/* exported writeData, readData */
-const data = {
+/* exported data, writeData, readData */
+interface dataInterface {
+  view: string;
+  entries: codeJournalForm[];
+  editing: null;
+  nextEntryId: number;
+}
+const data: dataInterface = {
   view: 'entry-form',
   entries: [],
   editing: null,
@@ -7,13 +13,14 @@ const data = {
 };
 
 function writeData(): void {
-  const formEntryArrayJSON = JSON.stringify(formEntryArray);
-  localStorage.setItem('formEntryArrayJSON-storage', formEntryArrayJSON);
+  const dataJSON = JSON.stringify(data.entries);
+  localStorage.setItem('data-storage', dataJSON);
 }
+
 function readData(): string[] {
-  const formEntryArrayStorage = localStorage.getItem('formEntryArray-storage');
-  if (formEntryArrayStorage !== null) {
-    return JSON.parse(formEntryArrayStorage);
+  const dataStorage = localStorage.getItem('data-storage');
+  if (typeof dataStorage === typeof '' && dataStorage !== null) {
+    return JSON.parse(dataStorage);
   } else {
     return [];
   }
