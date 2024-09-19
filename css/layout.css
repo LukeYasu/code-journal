@@ -13,6 +13,7 @@
 
 .column-full,
 .column-half {
+  display: flex;
   width: 100%;
 }
 
@@ -37,6 +38,21 @@ img {
 .user-notes {
   display: flex;
   flex-direction: column;
+}
+
+.entries-header {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.entry-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
 }
 
 @media screen and (width >= 768px) {

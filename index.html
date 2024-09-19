@@ -20,15 +20,16 @@
       <div class="header-background">
         <div class="container">
           <div class="row">
-            <div class="column-full">
+            <div class="column-full header-content">
               <h1 class="header">Code Journal</h1>
+              <a class="entries-anchor">Entries</a>
             </div>
           </div>
         </div>
       </div>
     </header>
     <main class="container">
-      <div data-view="entry-form">
+      <div id="entry-form" data-view="entry-form" class="not-hidden">
         <form>
           <div class="row">
             <h2 class="entry-header">New Entry</h2>
@@ -55,8 +56,16 @@
               <button class="button" type="submit">SAVE</button>
             </div>
           </div>
-          <div data-view="entries" class="hidden"></div>
         </form>
+      </div>
+      <div id="entries" data-view="entries" class="hidden">
+        <div class="row entries-header">
+          <h1>Entries</h1>
+          <button class="new-entry-button">NEW</button>
+        </div>
+        <ul class="past-entries">
+          <li class="no-entries">No entries have been recorded</li>
+        </ul>
       </div>
     </main>
     <script src="js/data.js"></script>

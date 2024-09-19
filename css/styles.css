@@ -27,7 +27,8 @@ textarea {
 }
 
 img {
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
+  border-radius: 0.35rem;
 }
 
 .button {
@@ -51,4 +52,43 @@ img {
 
 .entry-header {
   padding-left: 0.75rem;
+}
+
+ul {
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+
+.entries-anchor {
+  color: #fff;
+  font-size: 1.3rem;
+  padding: 1.15rem;
+}
+
+.entries-header {
+  padding: 0.75rem;
+}
+
+.new-entry-button {
+  font-family: serif;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #4c2676;
+  height: 2.25rem;
+  width: 4.5rem;
+  border-radius: 0.3rem;
+  border: 0.1rem none #686b6b;
+}
+
+.entry-text p {
+  margin: 0 0 1rem;
+  word-wrap: break-word;
+}
+
+.new-entry-button:hover {
+  cursor: pointer;
+}
+
+.entries-anchor:hover {
+  cursor: pointer;
 }

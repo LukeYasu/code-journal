@@ -7,7 +7,7 @@
         "vars": "all",
         "args": "all",
         "ignoreRestSiblings": true,
-        "varsIgnorePattern": "^(data|readData|writeData)$"
+        "varsIgnorePattern": "^(data|readData|writeData|readViewData)$"
       }
     ]
   }

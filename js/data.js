@@ -1,12 +1,14 @@
 'use strict';
 const data = {
   view: 'entry-form',
-  entries: [],
+  entries: readData(),
   editing: null,
   nextEntryId: 1,
 };
 function writeData() {
   const dataJSON = JSON.stringify(data.entries);
+  const dataViewJSON = JSON.stringify(data.view);
+  localStorage.setItem('data-view', dataViewJSON);
   localStorage.setItem('data-storage', dataJSON);
 }
 function readData() {
@@ -15,5 +17,13 @@ function readData() {
     return JSON.parse(dataStorage);
   } else {
     return [];
+  }
+}
+function readViewData() {
+  const dataView = localStorage.getItem('data-view');
+  if (dataView !== null) {
+    return JSON.parse(dataView);
+  } else {
+    return '';
   }
 }
