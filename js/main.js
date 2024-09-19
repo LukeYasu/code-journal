@@ -10,6 +10,7 @@ const $liNoEntries = document.querySelector('.no-entries');
 const $divEntryForm = document.querySelector('.entry-form');
 const $divEntries = document.querySelector('#entries');
 const $headerBackground = document.querySelector('.header-background');
+const $entryHeader = document.querySelector('.entry-header');
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
@@ -20,6 +21,7 @@ if (!$liNoEntries) throw new Error('$linoEntries query failed');
 if (!$divEntryForm) throw new Error('$divEntryForm query failed');
 if (!$divEntries) throw new Error('$divEntries query failed');
 if (!$headerBackground) throw new Error('$entriesAnchor query failed');
+if (!$entryHeader) throw new Error('$entryHeader query failed');
 $form.addEventListener('submit', handleSubmit);
 $photoURL.addEventListener('input', handleInput);
 function handleInput() {
@@ -28,6 +30,15 @@ function handleInput() {
 }
 function handleSubmit(event) {
   event.preventDefault();
+  if (data.editing !== null) {
+    data.entries[data.editing.entryId] = data.editing;
+    data.entries[data.editing.entryId].entryId = data.editing.entryId;
+    console.log(
+      'data.entries[data.editing.entryId].entryId',
+      data.entries[data.editing.entryId].entryId,
+    );
+    renderEntry(data.entries[data.editing.entryId]);
+  }
   const newFormEntry = {
     entryId: data.nextEntryId,
     title: $entryTitle.value,
@@ -54,8 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleNoEntries();
   viewSwap(data.view);
 });
+console.log(data.entries);
 function renderEntry(entry) {
   const $list = document.createElement('li');
+  $list.setAttribute('data-entry-id', `${entry.entryId}`);
   const $divRow = document.createElement('div');
   $divRow.className = 'row';
   const $divColumnHalfPhoto = document.createElement('div');
@@ -66,6 +79,8 @@ function renderEntry(entry) {
   $entryImg.src = entry.photoURL;
   const $entryHeader = document.createElement('h3');
   $entryHeader.textContent = entry.title;
+  const $editPencil = document.createElement('i');
+  $editPencil.className = 'fa-solid fa-pencil';
   const $p = document.createElement('p');
   $p.textContent = entry.notes;
   $list.append($divRow);
@@ -73,6 +88,7 @@ function renderEntry(entry) {
   $divColumnHalfPhoto.append($entryImg);
   $divRow.append($divColumnHalfText);
   $divColumnHalfText.append($entryHeader);
+  $entryHeader.append($editPencil);
   $divColumnHalfText.append($p);
   return $list;
 }
@@ -106,5 +122,20 @@ $divEntries.addEventListener('click', (event) => {
   const eventTarget = event.target;
   if (eventTarget.matches('.new-entry-button') && data.view === 'entries') {
     viewSwap('entry-form');
+  }
+});
+$ul.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  if (eventTarget.matches('.fa-pencil')) {
+    const $li = eventTarget.closest('li');
+    const entryId = $li?.getAttribute('data-entry-id');
+    data.editing =
+      data.entries[Math.abs(Number(entryId) - data.entries.length)];
+    viewSwap('entry-form');
+    $img.src = data.editing.photoURL;
+    $photoURL.setAttribute('value', data.editing.photoURL);
+    $entryTitle.setAttribute('value', data.editing.title);
+    $entryNotes.textContent = data.editing.notes;
+    $entryHeader.textContent = 'Edit Entry';
   }
 });

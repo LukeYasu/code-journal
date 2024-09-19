@@ -11,6 +11,9 @@ const $divEntries = document.querySelector('#entries') as HTMLDivElement;
 const $headerBackground = document.querySelector(
   '.header-background',
 ) as HTMLHeadingElement;
+const $entryHeader = document.querySelector(
+  '.entry-header',
+) as HTMLHeadingElement;
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
@@ -21,6 +24,7 @@ if (!$liNoEntries) throw new Error('$linoEntries query failed');
 if (!$divEntryForm) throw new Error('$divEntryForm query failed');
 if (!$divEntries) throw new Error('$divEntries query failed');
 if (!$headerBackground) throw new Error('$entriesAnchor query failed');
+if (!$entryHeader) throw new Error('$entryHeader query failed');
 
 interface CodeJournalForm {
   entryId: number;
@@ -39,6 +43,17 @@ function handleInput(): void {
 
 function handleSubmit(event: SubmitEvent): void {
   event.preventDefault();
+  if (data.editing !== null) {
+    data.entries[data.editing.entryId] = data.editing;
+
+    data.entries[data.editing.entryId].entryId = data.editing.entryId;
+
+    console.log(
+      'data.entries[data.editing.entryId].entryId',
+      data.entries[data.editing.entryId].entryId,
+    );
+    renderEntry(data.entries[data.editing.entryId]);
+  }
   const newFormEntry: CodeJournalForm = {
     entryId: data.nextEntryId,
     title: $entryTitle.value,
@@ -67,9 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleNoEntries();
   viewSwap(data.view);
 });
-
+console.log(data.entries);
 function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   const $list = document.createElement('li');
+  $list.setAttribute('data-entry-id', `${entry.entryId}`);
   const $divRow = document.createElement('div');
   $divRow.className = 'row';
   const $divColumnHalfPhoto = document.createElement('div');
@@ -80,6 +96,8 @@ function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   $entryImg.src = entry.photoURL;
   const $entryHeader = document.createElement('h3');
   $entryHeader.textContent = entry.title;
+  const $editPencil = document.createElement('i');
+  $editPencil.className = 'fa-solid fa-pencil';
   const $p = document.createElement('p');
   $p.textContent = entry.notes;
 
@@ -88,6 +106,7 @@ function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   $divColumnHalfPhoto.append($entryImg);
   $divRow.append($divColumnHalfText);
   $divColumnHalfText.append($entryHeader);
+  $entryHeader.append($editPencil);
   $divColumnHalfText.append($p);
   return $list;
 }
@@ -125,5 +144,21 @@ $divEntries.addEventListener('click', (event: Event): void => {
   const eventTarget = event.target as HTMLElement;
   if (eventTarget.matches('.new-entry-button') && data.view === 'entries') {
     viewSwap('entry-form');
+  }
+});
+
+$ul.addEventListener('click', (event: Event): void => {
+  const eventTarget = event.target as HTMLElement;
+  if (eventTarget.matches('.fa-pencil')) {
+    const $li = eventTarget.closest('li');
+    const entryId = $li?.getAttribute('data-entry-id');
+    data.editing =
+      data.entries[Math.abs(Number(entryId) - data.entries.length)];
+    viewSwap('entry-form');
+    $img.src = data.editing.photoURL;
+    $photoURL.setAttribute('value', data.editing.photoURL);
+    $entryTitle.setAttribute('value', data.editing.title);
+    $entryNotes.textContent = data.editing.notes;
+    $entryHeader.textContent = 'Edit Entry';
   }
 });

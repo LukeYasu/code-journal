@@ -2,7 +2,7 @@
 interface DataInterface {
   view: string;
   entries: CodeJournalForm[];
-  editing: null;
+  editing: null | CodeJournalForm;
   nextEntryId: number;
 }
 let data: DataInterface = {
