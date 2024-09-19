@@ -15,7 +15,6 @@ const data: DataInterface = {
 function writeData(): void {
   const dataJSON = JSON.stringify(data);
   localStorage.setItem('data-storage', dataJSON);
-  console.log('dataJSON', dataJSON);
 }
 
 function readData(): DataInterface {

@@ -8,7 +8,6 @@ const data = {
 function writeData() {
   const dataJSON = JSON.stringify(data);
   localStorage.setItem('data-storage', dataJSON);
-  console.log('dataJSON', dataJSON);
 }
 function readData() {
   const dataStorage = localStorage.getItem('data-storage');
