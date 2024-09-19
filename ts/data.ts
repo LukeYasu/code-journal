@@ -5,12 +5,14 @@ interface DataInterface {
   editing: null;
   nextEntryId: number;
 }
-const data: DataInterface = {
+let data: DataInterface = {
   view: 'entry-form',
   entries: [],
   editing: null,
   nextEntryId: 1,
 };
+
+data = readData();
 
 function writeData(): void {
   const dataJSON = JSON.stringify(data);

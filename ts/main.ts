@@ -49,11 +49,10 @@ function handleSubmit(event: SubmitEvent): void {
   data.entries.unshift(newFormEntry);
 
   toggleNoEntries();
-  // window.location.reload();
   $img?.setAttribute('src', 'images/placeholder-image-square.jpg');
   $form?.reset();
   writeData();
-  renderEntry(newFormEntry);
+  $ul.prepend(renderEntry(newFormEntry));
   viewSwap('entries');
 }
 const storedData = readData();
@@ -84,7 +83,6 @@ function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   const $p = document.createElement('p');
   $p.textContent = entry.notes;
 
-  $ul.prepend($list);
   $list.append($divRow);
   $divRow.append($divColumnHalfPhoto);
   $divColumnHalfPhoto.append($entryImg);
