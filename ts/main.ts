@@ -1,4 +1,4 @@
-/* global data, writeData, readViewData */
+/* global data, writeData */
 const $entryTitle = document.querySelector('#entry-title') as HTMLFormElement;
 const $photoURL = document.querySelector('#photo-url') as HTMLFormElement;
 const $entryNotes = document.querySelector('#entry-notes') as HTMLFormElement;
@@ -6,7 +6,7 @@ const $img = document.querySelector('img');
 const $form = document.querySelector('form') as HTMLFormElement;
 const $ul = document.querySelector('.past-entries') as HTMLUListElement;
 const $liNoEntries = document.querySelector('.no-entries') as HTMLElement;
-const $divEntryForm = document.querySelector('#entry-form') as HTMLDivElement;
+const $divEntryForm = document.querySelector('.entry-form') as HTMLDivElement;
 const $divEntries = document.querySelector('#entries') as HTMLDivElement;
 const $headerBackground = document.querySelector(
   '.header-background',
@@ -47,28 +47,26 @@ function handleSubmit(event: SubmitEvent): void {
   };
   data.nextEntryId += 1;
   data.entries.unshift(newFormEntry);
-  if (data.entries.length > 0) {
-    toggleNoEntries();
-  }
-  window.location.reload();
+
+  toggleNoEntries();
+  // window.location.reload();
   $img?.setAttribute('src', 'images/placeholder-image-square.jpg');
   $form?.reset();
   writeData();
-  renderEntry(data.entries[data.nextEntryId]);
+  renderEntry(newFormEntry);
   viewSwap('entries');
 }
+const storedData = readData();
+Object.assign(data, storedData);
 
 document.addEventListener('DOMContentLoaded', () => {
-  const storedData = readData();
-  if (storedData !== undefined) {
-    for (let i = 0; i < storedData.length; i++) {
-      $ul.append(renderEntry(storedData[i]));
+  if (data.entries.length > 0) {
+    for (let i = 0; i < data.entries.length; i++) {
+      $ul.append(renderEntry(data.entries[i]));
     }
   }
-  if (data.entries.length > 0) {
-    toggleNoEntries();
-  }
-  viewSwap(readViewData());
+  toggleNoEntries();
+  viewSwap(data.view);
 });
 
 function renderEntry(entry: CodeJournalForm): HTMLLIElement {
@@ -86,7 +84,7 @@ function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   const $p = document.createElement('p');
   $p.textContent = entry.notes;
 
-  $ul.append($list);
+  $ul.prepend($list);
   $list.append($divRow);
   $divRow.append($divColumnHalfPhoto);
   $divColumnHalfPhoto.append($entryImg);
@@ -97,7 +95,11 @@ function renderEntry(entry: CodeJournalForm): HTMLLIElement {
 }
 
 function toggleNoEntries(): void {
-  $liNoEntries.className = 'hidden';
+  if (data.entries.length > 0) {
+    $liNoEntries.className = 'hidden';
+  } else {
+    $liNoEntries.className = '';
+  }
 }
 
 function viewSwap(viewChoice: string): void {

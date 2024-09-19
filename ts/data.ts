@@ -1,4 +1,4 @@
-/* exported data, writeData, readData, readViewData */
+/* exported data, writeData, readData */
 interface DataInterface {
   view: string;
   entries: CodeJournalForm[];
@@ -7,31 +7,27 @@ interface DataInterface {
 }
 const data: DataInterface = {
   view: 'entry-form',
-  entries: readData(),
+  entries: [],
   editing: null,
   nextEntryId: 1,
 };
 
 function writeData(): void {
-  const dataJSON = JSON.stringify(data.entries);
-  const dataViewJSON = JSON.stringify(data.view);
-  localStorage.setItem('data-view', dataViewJSON);
+  const dataJSON = JSON.stringify(data);
   localStorage.setItem('data-storage', dataJSON);
+  console.log('dataJSON', dataJSON);
 }
 
-function readData(): CodeJournalForm[] {
+function readData(): DataInterface {
   const dataStorage = localStorage.getItem('data-storage');
   if (typeof dataStorage === typeof '' && dataStorage !== null) {
     return JSON.parse(dataStorage);
   } else {
-    return [];
-  }
-}
-function readViewData(): string {
-  const dataView = localStorage.getItem('data-view');
-  if (dataView !== null) {
-    return JSON.parse(dataView);
-  } else {
-    return '';
+    return {
+      view: 'entry-form',
+      entries: [],
+      editing: null,
+      nextEntryId: 1,
+    };
   }
 }
