@@ -1,12 +1,13 @@
 'use strict';
-const data = {
+let data = {
   view: 'entry-form',
   entries: [],
   editing: null,
   nextEntryId: 1,
 };
+data = readData();
 function writeData() {
-  const dataJSON = JSON.stringify(data.entries);
+  const dataJSON = JSON.stringify(data);
   localStorage.setItem('data-storage', dataJSON);
 }
 function readData() {
@@ -14,6 +15,11 @@ function readData() {
   if (typeof dataStorage === typeof '' && dataStorage !== null) {
     return JSON.parse(dataStorage);
   } else {
-    return [];
+    return {
+      view: 'entry-form',
+      entries: [],
+      editing: null,
+      nextEntryId: 1,
+    };
   }
 }
