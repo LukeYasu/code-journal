@@ -14,7 +14,6 @@ const $headerBackground = document.querySelector(
 const $entryHeader = document.querySelector(
   '.entry-header',
 ) as HTMLHeadingElement;
-// const $editPencil = document.querySelector('i') as HTMLElement;
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');

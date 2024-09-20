@@ -11,7 +11,6 @@ const $divEntryForm = document.querySelector('.entry-form');
 const $divEntries = document.querySelector('#entries');
 const $headerBackground = document.querySelector('.header-background');
 const $entryHeader = document.querySelector('.entry-header');
-// const $editPencil = document.querySelector('i') as HTMLElement;
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
