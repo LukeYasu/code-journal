@@ -58,17 +58,7 @@ function handleSubmit(event: SubmitEvent): void {
 
     const $li = $ul.querySelector(`li[data-entry-id="${editedData.entryId}"]`);
 
-    if ($li) {
-      const $entryImg = $li.querySelector('img');
-      const $entryHeader = $li.querySelector('h3');
-      const $p = $li.querySelector('p');
-      const $editPencil = $li.querySelector('i');
-
-      if ($entryImg) $entryImg.src = editedData.photoURL;
-      if ($entryHeader) $entryHeader.textContent = editedData.title;
-      if ($p) $p.textContent = editedData.notes;
-      if ($editPencil && $entryHeader) $entryHeader.append($editPencil);
-    }
+    $li?.replaceWith(renderEntry(editedData));
 
     if ($img) $img.src = 'images/placeholder-image-square.jpg';
     $form.reset();
@@ -155,18 +145,12 @@ function viewSwap(viewChoice: string): void {
   }
 }
 
-$headerBackground.addEventListener('click', (event: Event): void => {
-  const eventTarget = event.target as HTMLElement;
-  if (eventTarget.matches('.entries-anchor') && data.view === 'entry-form') {
-    viewSwap('entries');
-  }
+$headerBackground.addEventListener('click', (): void => {
+  viewSwap('entries');
 });
 
-$divEntries.addEventListener('click', (event: Event): void => {
-  const eventTarget = event.target as HTMLElement;
-  if (eventTarget.matches('.new-entry-button') && data.view === 'entries') {
-    viewSwap('entry-form');
-  }
+$divEntries.addEventListener('click', (): void => {
+  viewSwap('entry-form');
 });
 
 $ul.addEventListener('click', (event: Event): void => {

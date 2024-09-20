@@ -42,16 +42,7 @@ function handleSubmit(event) {
     };
     data.entries[entryIndex] = editedData;
     const $li = $ul.querySelector(`li[data-entry-id="${editedData.entryId}"]`);
-    if ($li) {
-      const $entryImg = $li.querySelector('img');
-      const $entryHeader = $li.querySelector('h3');
-      const $p = $li.querySelector('p');
-      const $editPencil = $li.querySelector('i');
-      if ($entryImg) $entryImg.src = editedData.photoURL;
-      if ($entryHeader) $entryHeader.textContent = editedData.title;
-      if ($p) $p.textContent = editedData.notes;
-      if ($editPencil && $entryHeader) $entryHeader.append($editPencil);
-    }
+    $li?.replaceWith(renderEntry(editedData));
     if ($img) $img.src = 'images/placeholder-image-square.jpg';
     $form.reset();
     data.editing = null;
@@ -130,17 +121,11 @@ function viewSwap(viewChoice) {
     writeData();
   }
 }
-$headerBackground.addEventListener('click', (event) => {
-  const eventTarget = event.target;
-  if (eventTarget.matches('.entries-anchor') && data.view === 'entry-form') {
-    viewSwap('entries');
-  }
+$headerBackground.addEventListener('click', () => {
+  viewSwap('entries');
 });
-$divEntries.addEventListener('click', (event) => {
-  const eventTarget = event.target;
-  if (eventTarget.matches('.new-entry-button') && data.view === 'entries') {
-    viewSwap('entry-form');
-  }
+$divEntries.addEventListener('click', () => {
+  viewSwap('entry-form');
 });
 $ul.addEventListener('click', (event) => {
   const eventTarget = event.target;
