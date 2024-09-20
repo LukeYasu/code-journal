@@ -2,6 +2,10 @@
   display: none !important;
 }
 
+.display-hidden {
+  visibility: hidden;
+}
+
 .container {
   max-width: 575px;
 }
@@ -20,6 +24,7 @@
 .save-button {
   width: 100%;
   justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .header-background {
