@@ -11,6 +11,9 @@ const $divEntries = document.querySelector('#entries') as HTMLDivElement;
 const $headerBackground = document.querySelector(
   '.header-background',
 ) as HTMLHeadingElement;
+const $entryHeader = document.querySelector(
+  '.entry-header',
+) as HTMLHeadingElement;
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
@@ -21,6 +24,7 @@ if (!$liNoEntries) throw new Error('$linoEntries query failed');
 if (!$divEntryForm) throw new Error('$divEntryForm query failed');
 if (!$divEntries) throw new Error('$divEntries query failed');
 if (!$headerBackground) throw new Error('$entriesAnchor query failed');
+if (!$entryHeader) throw new Error('$entryHeader query failed');
 
 interface CodeJournalForm {
   entryId: number;
@@ -39,24 +43,48 @@ function handleInput(): void {
 
 function handleSubmit(event: SubmitEvent): void {
   event.preventDefault();
-  const newFormEntry: CodeJournalForm = {
-    entryId: data.nextEntryId,
-    title: $entryTitle.value,
-    photoURL: $photoURL.value,
-    notes: $entryNotes.value,
-  };
-  data.nextEntryId += 1;
-  data.entries.unshift(newFormEntry);
+  if (data.editing !== null) {
+    const entryIndex = data.entries.findIndex(
+      (entry) => entry.entryId === data.editing!.entryId,
+    );
+    const editedData = {
+      entryId: data.editing!.entryId,
+      title: $entryTitle.value,
+      photoURL: $photoURL.value,
+      notes: $entryNotes.value,
+    };
 
-  toggleNoEntries();
-  $img?.setAttribute('src', 'images/placeholder-image-square.jpg');
-  $form?.reset();
-  writeData();
-  $ul.prepend(renderEntry(newFormEntry));
-  viewSwap('entries');
+    data.entries[entryIndex] = editedData;
+
+    const $li = $ul.querySelector(`li[data-entry-id="${editedData.entryId}"]`);
+
+    $li?.replaceWith(renderEntry(editedData));
+
+    if ($img) $img.src = 'images/placeholder-image-square.jpg';
+    $form.reset();
+    data.editing = null;
+    $entryHeader.textContent = 'New Entry';
+
+    viewSwap('entries');
+    writeData();
+  } else {
+    const newFormEntry: CodeJournalForm = {
+      entryId: data.nextEntryId,
+      title: $entryTitle.value,
+      photoURL: $photoURL.value,
+      notes: $entryNotes.value,
+    };
+    data.nextEntryId += 1;
+    data.entries.unshift(newFormEntry);
+
+    toggleNoEntries();
+    if ($img) $img.src = 'images/placeholder-image-square.jpg';
+    $form?.reset();
+    writeData();
+    $ul.prepend(renderEntry(newFormEntry));
+    viewSwap('entries');
+  }
 }
-const storedData = readData();
-Object.assign(data, storedData);
 
 document.addEventListener('DOMContentLoaded', () => {
   if (data.entries.length > 0) {
@@ -67,9 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleNoEntries();
   viewSwap(data.view);
 });
-
 function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   const $list = document.createElement('li');
+  $list.setAttribute('data-entry-id', `${entry.entryId}`);
   const $divRow = document.createElement('div');
   $divRow.className = 'row';
   const $divColumnHalfPhoto = document.createElement('div');
@@ -80,6 +108,8 @@ function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   $entryImg.src = entry.photoURL;
   const $entryHeader = document.createElement('h3');
   $entryHeader.textContent = entry.title;
+  const $editPencil = document.createElement('i');
+  $editPencil.className = 'fa-solid fa-pencil';
   const $p = document.createElement('p');
   $p.textContent = entry.notes;
 
@@ -88,6 +118,7 @@ function renderEntry(entry: CodeJournalForm): HTMLLIElement {
   $divColumnHalfPhoto.append($entryImg);
   $divRow.append($divColumnHalfText);
   $divColumnHalfText.append($entryHeader);
+  $entryHeader.append($editPencil);
   $divColumnHalfText.append($p);
   return $list;
 }
@@ -114,16 +145,28 @@ function viewSwap(viewChoice: string): void {
   }
 }
 
-$headerBackground.addEventListener('click', (event: Event): void => {
-  const eventTarget = event.target as HTMLElement;
-  if (eventTarget.matches('.entries-anchor') && data.view === 'entry-form') {
-    viewSwap('entries');
-  }
+$headerBackground.addEventListener('click', (): void => {
+  viewSwap('entries');
 });
 
-$divEntries.addEventListener('click', (event: Event): void => {
+$divEntries.addEventListener('click', (): void => {
+  viewSwap('entry-form');
+});
+
+$ul.addEventListener('click', (event: Event): void => {
   const eventTarget = event.target as HTMLElement;
-  if (eventTarget.matches('.new-entry-button') && data.view === 'entries') {
+  if (eventTarget.matches('.fa-pencil')) {
+    const $li = eventTarget.closest('li');
+    const entryId = $li?.getAttribute('data-entry-id');
+    const entryIdIndex = data.entries.findIndex(
+      (entry) => entry.entryId === Number(entryId),
+    );
+    data.editing = data.entries[entryIdIndex];
     viewSwap('entry-form');
+    $img.src = data.editing.photoURL;
+    $photoURL.value = data.editing.photoURL;
+    $entryTitle.value = data.editing.title;
+    $entryNotes.value = data.editing.notes;
+    $entryHeader.textContent = 'Edit Entry';
   }
 });

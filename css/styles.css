@@ -85,6 +85,14 @@ ul {
   word-wrap: break-word;
 }
 
+.entry-text h3 i {
+  color: #686b6b;
+}
+
+.entry-text h3 i:hover {
+  color: black;
+}
+
 .new-entry-button:hover {
   cursor: pointer;
 }

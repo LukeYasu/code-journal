@@ -50,6 +50,11 @@ img {
   flex-direction: column;
 }
 
+.entry-text h3 {
+  display: flex;
+  justify-content: space-between;
+}
+
 .header-content {
   display: flex;
   align-items: center;
