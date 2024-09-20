@@ -64,7 +64,6 @@ function handleSubmit(event: SubmitEvent): void {
     for (const entry of data.entries) {
       $ul.append(renderEntry(entry));
     }
-    console.log('running after edit');
   } else {
     const newFormEntry: CodeJournalForm = {
       entryId: data.nextEntryId,
@@ -94,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
   viewSwap(data.view);
 });
 function renderEntry(entry: CodeJournalForm): HTMLLIElement {
-  console.log(entry.entryId);
   const $list = document.createElement('li');
   $list.setAttribute('data-entry-id', `${entry.entryId}`);
   const $divRow = document.createElement('div');

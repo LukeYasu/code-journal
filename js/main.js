@@ -50,7 +50,6 @@ function handleSubmit(event) {
     for (const entry of data.entries) {
       $ul.append(renderEntry(entry));
     }
-    console.log('running after edit');
   } else {
     const newFormEntry = {
       entryId: data.nextEntryId,
@@ -78,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
   viewSwap(data.view);
 });
 function renderEntry(entry) {
-  console.log(entry.entryId);
   const $list = document.createElement('li');
   $list.setAttribute('data-entry-id', `${entry.entryId}`);
   const $divRow = document.createElement('div');
