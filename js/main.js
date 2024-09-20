@@ -11,6 +11,7 @@ const $divEntryForm = document.querySelector('.entry-form');
 const $divEntries = document.querySelector('#entries');
 const $headerBackground = document.querySelector('.header-background');
 const $entryHeader = document.querySelector('.entry-header');
+// const $editPencil = document.querySelector('i') as HTMLElement;
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
@@ -34,22 +35,30 @@ function handleSubmit(event) {
     const entryIndex = data.entries.findIndex(
       (entry) => entry.entryId === data.editing.entryId,
     );
-    data.entries[entryIndex] = {
+    const editedData = {
       entryId: data.editing.entryId,
       title: $entryTitle.value,
       photoURL: $photoURL.value,
       notes: $entryNotes.value,
     };
-    $form.reset();
-    $img.src = 'images/placeholder-image-square.jpg';
-    $entryNotes.textContent = '';
-    data.editing = null;
-    viewSwap('entries');
-    $entryHeader.textContent = 'New Entry';
-    clearList();
-    for (const entry of data.entries) {
-      $ul.append(renderEntry(entry));
+    data.entries[entryIndex] = editedData;
+    const $li = $ul.querySelector(`li[data-entry-id="${editedData.entryId}"]`);
+    if ($li) {
+      const $entryImg = $li.querySelector('img');
+      const $entryHeader = $li.querySelector('h3');
+      const $p = $li.querySelector('p');
+      const $editPencil = $li.querySelector('i');
+      if ($entryImg) $entryImg.src = editedData.photoURL;
+      if ($entryHeader) $entryHeader.textContent = editedData.title;
+      if ($p) $p.textContent = editedData.notes;
+      if ($editPencil && $entryHeader) $entryHeader.append($editPencil);
     }
+    if ($img) $img.src = 'images/placeholder-image-square.jpg';
+    $form.reset();
+    data.editing = null;
+    $entryHeader.textContent = 'New Entry';
+    viewSwap('entries');
+    writeData();
   } else {
     const newFormEntry = {
       entryId: data.nextEntryId,
@@ -60,7 +69,7 @@ function handleSubmit(event) {
     data.nextEntryId += 1;
     data.entries.unshift(newFormEntry);
     toggleNoEntries();
-    $img.src = 'images/placeholder-image-square.jpg';
+    if ($img) $img.src = 'images/placeholder-image-square.jpg';
     $form?.reset();
     writeData();
     $ul.prepend(renderEntry(newFormEntry));
@@ -139,18 +148,15 @@ $ul.addEventListener('click', (event) => {
   if (eventTarget.matches('.fa-pencil')) {
     const $li = eventTarget.closest('li');
     const entryId = $li?.getAttribute('data-entry-id');
-    data.editing =
-      data.entries[Math.abs(Number(entryId) - data.entries.length)];
+    const entryIdIndex = data.entries.findIndex(
+      (entry) => entry.entryId === Number(entryId),
+    );
+    data.editing = data.entries[entryIdIndex];
     viewSwap('entry-form');
     $img.src = data.editing.photoURL;
     $photoURL.value = data.editing.photoURL;
     $entryTitle.value = data.editing.title;
-    $entryNotes.textContent = data.editing.notes;
+    $entryNotes.value = data.editing.notes;
     $entryHeader.textContent = 'Edit Entry';
   }
 });
-function clearList() {
-  while ($ul.firstChild) {
-    $ul.removeChild($ul.firstChild);
-  }
-}
