@@ -31,7 +31,6 @@ function handleInput() {
 function handleSubmit(event) {
   event.preventDefault();
   if (data.editing !== null) {
-    data.entries[data.editing.entryId] = data.editing;
     const entryIndex = data.entries.findIndex(
       (entry) => entry.entryId === data.editing.entryId,
     );
@@ -41,28 +40,33 @@ function handleSubmit(event) {
       photoURL: $photoURL.value,
       notes: $entryNotes.value,
     };
-    // $ul.remove;
+    $form.reset();
+    $img.src = 'images/placeholder-image-square.jpg';
+    $entryNotes.textContent = '';
+    data.editing = null;
+    viewSwap('entries');
+    $entryHeader.textContent = 'New Entry';
+    clearList();
     for (const entry of data.entries) {
       $ul.append(renderEntry(entry));
     }
+    console.log('running after edit');
+  } else {
+    const newFormEntry = {
+      entryId: data.nextEntryId,
+      title: $entryTitle.value,
+      photoURL: $photoURL.value,
+      notes: $entryNotes.value,
+    };
+    data.nextEntryId += 1;
+    data.entries.unshift(newFormEntry);
+    toggleNoEntries();
+    $img.src = 'images/placeholder-image-square.jpg';
+    $form?.reset();
+    writeData();
+    $ul.prepend(renderEntry(newFormEntry));
     viewSwap('entries');
-    $entryHeader.textContent = 'New Entry';
-    data.editing = null;
   }
-  // const newFormEntry: CodeJournalForm = {
-  //   entryId: data.nextEntryId,
-  //   title: $entryTitle.value,
-  //   photoURL: $photoURL.value,
-  //   notes: $entryNotes.value,
-  // };
-  // data.nextEntryId += 1;
-  // data.entries.unshift(newFormEntry);
-  // toggleNoEntries();
-  // $img?.setAttribute('src', 'images/placeholder-image-square.jpg');
-  // $form?.reset();
-  // writeData();
-  // $ul.prepend(renderEntry(newFormEntry));
-  // viewSwap('entries');
 }
 document.addEventListener('DOMContentLoaded', () => {
   if (data.entries.length > 0) {
@@ -73,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleNoEntries();
   viewSwap(data.view);
 });
-console.log(data.entries);
 function renderEntry(entry) {
+  console.log(entry.entryId);
   const $list = document.createElement('li');
   $list.setAttribute('data-entry-id', `${entry.entryId}`);
   const $divRow = document.createElement('div');
@@ -141,9 +145,14 @@ $ul.addEventListener('click', (event) => {
       data.entries[Math.abs(Number(entryId) - data.entries.length)];
     viewSwap('entry-form');
     $img.src = data.editing.photoURL;
-    $photoURL.setAttribute('value', data.editing.photoURL);
-    $entryTitle.setAttribute('value', data.editing.title);
+    $photoURL.value = data.editing.photoURL;
+    $entryTitle.value = data.editing.title;
     $entryNotes.textContent = data.editing.notes;
     $entryHeader.textContent = 'Edit Entry';
   }
 });
+function clearList() {
+  while ($ul.firstChild) {
+    $ul.removeChild($ul.firstChild);
+  }
+}
