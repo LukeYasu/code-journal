@@ -11,6 +11,10 @@ const $divEntryForm = document.querySelector('.entry-form');
 const $divEntries = document.querySelector('#entries');
 const $headerBackground = document.querySelector('.header-background');
 const $entryHeader = document.querySelector('.entry-header');
+const $deleteButton = document.querySelector('.delete-button');
+const $openModal = document.querySelector('.open-modal');
+const $closeModal = document.querySelector('.close-modal');
+const $dialog = document.querySelector('dialog');
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
@@ -22,6 +26,10 @@ if (!$divEntryForm) throw new Error('$divEntryForm query failed');
 if (!$divEntries) throw new Error('$divEntries query failed');
 if (!$headerBackground) throw new Error('$entriesAnchor query failed');
 if (!$entryHeader) throw new Error('$entryHeader query failed');
+if (!$deleteButton) throw new Error('$deleteButton query failed');
+if (!$openModal) throw new Error('$openModal query failed');
+if (!$closeModal) throw new Error('$closeModal query failed');
+if (!$dialog) throw new Error('$dialog query failed');
 $form.addEventListener('submit', handleSubmit);
 $photoURL.addEventListener('input', handleInput);
 function handleInput() {
@@ -121,11 +129,22 @@ function viewSwap(viewChoice) {
     writeData();
   }
 }
-$headerBackground.addEventListener('click', () => {
-  viewSwap('entries');
+$headerBackground.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  if (eventTarget.matches('.entries-anchor')) {
+    viewSwap('entries');
+    if ($img) $img.src = 'images/placeholder-image-square.jpg';
+    $form.reset();
+    data.editing = null;
+    $entryHeader.textContent = 'New Entry';
+  }
 });
-$divEntries.addEventListener('click', () => {
-  viewSwap('entry-form');
+$divEntries.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  if (eventTarget.matches('.new-entry-button') && data.view === 'entries') {
+    viewSwap('entry-form');
+    $deleteButton.className = 'display-hidden delete-button';
+  }
 });
 $ul.addEventListener('click', (event) => {
   const eventTarget = event.target;
@@ -142,5 +161,28 @@ $ul.addEventListener('click', (event) => {
     $entryTitle.value = data.editing.title;
     $entryNotes.value = data.editing.notes;
     $entryHeader.textContent = 'Edit Entry';
+    $deleteButton.className = 'delete-button';
   }
+});
+$deleteButton.addEventListener('click', () => {
+  $dialog.showModal();
+});
+$dialog.addEventListener('click', (event) => {
+  const eventTarget = event.target;
+  if (eventTarget.matches('.delete-entry')) {
+    const deleteIndex = data.entries.findIndex(
+      (entry) => entry.entryId === data.editing?.entryId,
+    );
+    data.entries.splice(deleteIndex, 1);
+    const $li = document.querySelector(
+      `li[data-entry-id="${data.editing?.entryId}"]`,
+    );
+    if ($li) $li.remove();
+    toggleNoEntries();
+    viewSwap('entries');
+    data.editing = null;
+    $entryHeader.textContent = 'New Entry';
+    writeData();
+  }
+  $dialog.close();
 });

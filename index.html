@@ -53,7 +53,14 @@
               <textarea id="entry-notes" required></textarea>
             </div>
             <div class="row save-button">
+              <button class="delete-button display-hidden" type="button">
+                Delete Entry
+              </button>
               <button class="button" type="submit">SAVE</button>
+              <dialog class="open-modal">
+                <h2 class="delete-entry">Delete Entry</h2>
+                <h2 class="close-modal">Cancel</h2>
+              </dialog>
             </div>
           </div>
         </form>

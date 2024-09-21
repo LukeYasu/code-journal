@@ -77,7 +77,7 @@ ul {
   height: 2.25rem;
   width: 4.5rem;
   border-radius: 0.3rem;
-  border: 0.1rem none #686b6b;
+  border-style: none;
 }
 
 .entry-text p {
@@ -87,6 +87,30 @@ ul {
 
 .entry-text h3 i {
   color: #686b6b;
+}
+
+.delete-button {
+  border: none;
+  color: red;
+  text-decoration: underline;
+  padding-left: 0.75rem;
+}
+
+dialog {
+  border-radius: 0.3rem;
+  border: 0.1rem solid #686b6b;
+  font-family: sans-serif;
+  padding: 3rem;
+}
+
+.delete-entry:hover {
+  color: red;
+  text-decoration: underline;
+}
+
+.close-modal:hover {
+  color: red;
+  text-decoration: underline;
 }
 
 .entry-text h3 i:hover {

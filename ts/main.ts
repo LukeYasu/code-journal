@@ -14,6 +14,10 @@ const $headerBackground = document.querySelector(
 const $entryHeader = document.querySelector(
   '.entry-header',
 ) as HTMLHeadingElement;
+const $deleteButton = document.querySelector('.delete-button') as HTMLElement;
+const $openModal = document.querySelector('.open-modal') as HTMLDialogElement;
+const $closeModal = document.querySelector('.close-modal') as HTMLDialogElement;
+const $dialog = document.querySelector('dialog') as HTMLDialogElement;
 if (!$entryTitle) throw new Error('$entryTitle query failed');
 if (!$photoURL) throw new Error('$photoURL query failed');
 if (!$entryNotes) throw new Error('$entryNotes query failed');
@@ -25,7 +29,10 @@ if (!$divEntryForm) throw new Error('$divEntryForm query failed');
 if (!$divEntries) throw new Error('$divEntries query failed');
 if (!$headerBackground) throw new Error('$entriesAnchor query failed');
 if (!$entryHeader) throw new Error('$entryHeader query failed');
-
+if (!$deleteButton) throw new Error('$deleteButton query failed');
+if (!$openModal) throw new Error('$openModal query failed');
+if (!$closeModal) throw new Error('$closeModal query failed');
+if (!$dialog) throw new Error('$dialog query failed');
 interface CodeJournalForm {
   entryId: number;
   title: string;
@@ -57,7 +64,6 @@ function handleSubmit(event: SubmitEvent): void {
     data.entries[entryIndex] = editedData;
 
     const $li = $ul.querySelector(`li[data-entry-id="${editedData.entryId}"]`);
-
     $li?.replaceWith(renderEntry(editedData));
 
     if ($img) $img.src = 'images/placeholder-image-square.jpg';
@@ -145,12 +151,23 @@ function viewSwap(viewChoice: string): void {
   }
 }
 
-$headerBackground.addEventListener('click', (): void => {
-  viewSwap('entries');
+$headerBackground.addEventListener('click', (event: Event): void => {
+  const eventTarget = event.target as HTMLElement;
+  if (eventTarget.matches('.entries-anchor')) {
+    viewSwap('entries');
+    if ($img) $img.src = 'images/placeholder-image-square.jpg';
+    $form.reset();
+    data.editing = null;
+    $entryHeader.textContent = 'New Entry';
+  }
 });
 
-$divEntries.addEventListener('click', (): void => {
-  viewSwap('entry-form');
+$divEntries.addEventListener('click', (event: Event): void => {
+  const eventTarget = event.target as HTMLElement;
+  if (eventTarget.matches('.new-entry-button') && data.view === 'entries') {
+    viewSwap('entry-form');
+    $deleteButton.className = 'display-hidden delete-button';
+  }
 });
 
 $ul.addEventListener('click', (event: Event): void => {
@@ -168,5 +185,30 @@ $ul.addEventListener('click', (event: Event): void => {
     $entryTitle.value = data.editing.title;
     $entryNotes.value = data.editing.notes;
     $entryHeader.textContent = 'Edit Entry';
+    $deleteButton.className = 'delete-button';
   }
+});
+
+$deleteButton.addEventListener('click', () => {
+  $dialog.showModal();
+});
+$dialog.addEventListener('click', (event: Event) => {
+  const eventTarget = event.target as HTMLElement;
+  if (eventTarget.matches('.delete-entry')) {
+    const deleteIndex = data.entries.findIndex(
+      (entry) => entry.entryId === data.editing?.entryId,
+    );
+    data.entries.splice(deleteIndex, 1);
+    const $li = document.querySelector(
+      `li[data-entry-id="${data.editing?.entryId}"]`,
+    );
+    if ($li) $li.remove();
+
+    toggleNoEntries();
+    viewSwap('entries');
+    data.editing = null;
+    $entryHeader.textContent = 'New Entry';
+    writeData();
+  }
+  $dialog.close();
 });
